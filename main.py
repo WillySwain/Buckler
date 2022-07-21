@@ -14,8 +14,8 @@ pygame.display.set_caption("Buckler")
 clock = pygame.time.Clock();
 FPS = 60
 tutorialBoss = Boss(4)
-defaultCharacter = Character(["slam", "slice", "bash"])
-index = randrange(0, 3)
+defaultCharacter = Character(["slam", "slice", "bash","augue incidant tibi"])
+index = randrange(0, 4)
 text = defaultCharacter.spellBook[index]
 font = pygame.freetype.Font(None, 64)
 font.origin = True
@@ -54,7 +54,7 @@ while running:
                 defaultCharacter.curLetter += 1
                 if defaultCharacter.curLetter>=len(text):
                     defaultCharacter.curLetter = 0
-                    index = randrange(0, 3)
+                    index = randrange(0, 4)
                     text = defaultCharacter.spellBook[index]
                     text_surf_rect = font.get_rect(text)
                     baseline = text_surf_rect.y
