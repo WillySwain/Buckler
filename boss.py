@@ -3,9 +3,10 @@ from random import randrange
 
 
 class Boss:
-    def __init__(self, maxHealth, maxCounter):
+    def __init__(self, maxHealth, maxCounter,miss_cooldown):
 
         self.rect = pygame.Rect((600, 100, 80, 100))
+        self.miss_cooldown = miss_cooldown
         self.recoveryTime = 0
         self.health = maxHealth
         self.maxHealth = maxHealth
@@ -40,4 +41,5 @@ class Boss:
         if attackRoll == 1:
             self.isBossAttacking = True
         else:
+            pygame.time.delay(self.miss_cooldown)
             self.isBossAttacking = False
