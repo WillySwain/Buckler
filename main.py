@@ -25,22 +25,23 @@ def get_font(size):
 
 
 def play(difficulty):
-    #one boss for now
+    # one boss for now
     yeti_sprite = pygame.image.load("assets/images/bosses/yeti/Yeti.png").convert_alpha()
-    if difficulty == "hard":
-        damage = 7
-        recoveryTime = 60
-        maxCounter = 15
-        miss_cooldown = 50
-        defaultCharacter = Character(["wasafe", "raslacar", "augue inrcidant tibi", "etwad", "freeasr", "qazxcdews"])
+    wizard_sprite = pygame.image.load("assets/images/wizardspritesheet.png").convert_alpha()
+    if difficulty == "easy":
+        damage = 40
+        recoveryTime = 250
+        maxCounter = 120
+        miss_cooldown = 300
+        defaultCharacter = Character(["wasafe", "raslacar", "augue inrcidant tibi", "etwad", "freeasr", "qazxcdews"],wizard_sprite)
 
     else:
         damage = 15
-        defaultCharacter = Character(["wesa", "refca", "frazzer", "wewsa", "wasda", "weza"])
+        defaultCharacter = Character(["wesa", "refca", "frazzer", "wewsa", "wasda", "weza", "qwexa"],wizard_sprite)
         recoveryTime = 100
         maxCounter = 40
         miss_cooldown = 200
-    tutorialBoss = Boss(1000, maxCounter,miss_cooldown,yeti_sprite)
+    tutorialBoss = Boss(1000, maxCounter, miss_cooldown, yeti_sprite)
     index = randrange(0, len(defaultCharacter.spellBook))
 
     # annoying text work
@@ -68,7 +69,7 @@ def play(difficulty):
         if tutorialBoss.recoveryTime == 0:
             if tutorialBoss.isBossAttacking:
                 if tutorialBoss.attackCounter == 0:
-                    tutorialBoss.action=0
+                    tutorialBoss.action = 0
                     if tutorialBoss.attackDirection == defaultCharacter.curBlock:
                         print("BLOCKED")
                     else:
@@ -90,14 +91,11 @@ def play(difficulty):
 
                     tutorialBoss.isBossAttacking = False
                     tutorialBoss.recoveryTime = recoveryTime  # currently recovery time
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(800, 250, 60, 20))
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(700, 350, 60, 20))
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(900, 350, 60, 20))
 
                 else:
                     tutorialBoss.attackCounter -= 1
-                    if tutorialBoss.attackCounter == 20:
-                       tutorialBoss.action=3
+                    if tutorialBoss.attackCounter == 10:  # attacking animation
+                        tutorialBoss.action = 3
 
             else:
                 tutorialBoss.checkIfAttacking()
@@ -110,30 +108,24 @@ def play(difficulty):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     defaultCharacter.curBlock = "left"
-                    pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(700, 400, 60, 60))
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(800, 300, 60, 60))
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(900, 400, 60, 60))
+                    defaultCharacter.action = 4
                 if event.key == pygame.K_UP:
                     defaultCharacter.curBlock = "up"
+                    defaultCharacter.action = 5
                     print(defaultCharacter.curBlock)
-                    pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(800, 300, 60, 60))
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(700, 400, 60, 60))
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(900, 400, 60, 60))
                 if event.key == pygame.K_RIGHT:
                     defaultCharacter.curBlock = "right"
+                    defaultCharacter.action = 1
                     print(defaultCharacter.curBlock)
-                    pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(900, 400, 60, 60))
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(800, 300, 60, 60))
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(700, 400, 60, 60))
                 if event.unicode == defaultCharacter.spellBook[index][defaultCharacter.curLetter].lower():
                     defaultCharacter.curLetter += 1
                     if defaultCharacter.curLetter >= len(text):
                         tutorialBoss.health = tutorialBoss.health - len(text) * damage  # balancing needed
                         if tutorialBoss.health <= 0:
-                            tutorialBoss.draw(screen,150,550)
+                            tutorialBoss.draw(screen, 150, 550)
                             pygame.display.update()
                             pygame.time.delay(500)
-                            screen.fill((218,165,32))
+                            screen.fill((218, 165, 32))
                             font = pygame.font.SysFont('pristina', 64)
                             text = font.render('You Win', True, ((255, 255, 255)))
                             winrec = text.get_rect()
@@ -202,7 +194,7 @@ def main_menu():
         menu_rect = menu_text.get_rect(center=(500, 100))
         play_button = Button(image=None, pos=(500, 300), text_input="Play", font=get_font(75), color=((255, 0, 0)),
                              hover_color=((255, 255, 255)))
-        tutorial_button = Button(image=None, pos=(500, 400), text_input="Tutorial", font=get_font(75),
+        tutorial_button = Button(image=None, pos=(500, 400), text_input="Controls", font=get_font(75),
                                  color=(255, 0, 0),
                                  hover_color=(255, 255, 255))
         quit_button = Button(image=None, pos=(500, 500), text_input="Quit", font=get_font(75), color=(255, 0, 0),

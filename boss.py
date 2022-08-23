@@ -46,7 +46,6 @@ class Boss:
             self.attackDirection = "right"
             self.action = 1
             #pygame.draw.rect(surface, (255, 0, 0), pygame.Rect(900, 350, 60, 20))
-        pygame.draw.rect(surface, (255, 0, 0), self.rect)
         self.attackCounter = self.maxCounter
 
     def checkIfAttacking(self):

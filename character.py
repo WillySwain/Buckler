@@ -2,20 +2,32 @@ import pygame
 
 
 class Character:
-    def __init__(self, spellBook):
+    def __init__(self, spellBook, spritesheet):
+        self.images = self.load_images(spritesheet)
+        self.action = 0  # 0 idle #1:rightblock #2:attack #3 oops frontblock #4 blockleft #5 block up
+        self.image = self.images[self.action]
         self.curBlock = ""
         self.health = 5
         self.rect = pygame.Rect((450, 350, 80, 100))
         self.spellBook = spellBook
         self.curLetter = 0
-    def draw(self, surface):
-        pygame.draw.rect(surface, (255, 0, 0), self.rect)
-        #health bs
-        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect((5), 5, 50, 50))
-        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect((105), 5, 50, 50))
-        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect((205), 5, 50, 50))
-        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect((305), 5, 50, 50))
-        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect((405), 5, 50, 50))
-        for i in range(self.health):
-            pygame.draw.rect(surface, (255,0,0), pygame.Rect((i*100+5),5,50,50))
 
+    def load_images(self, sprite_sheet):
+        images = []
+        for i in range(7):
+            tempimage = sprite_sheet.subsurface(i * 128, 0, 128, 128)
+            images.append(pygame.transform.scale(tempimage, (128 * 1.5, 128 * 1.5)))
+        return images
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(450, 320, 192, 192))
+        self.image = self.images[self.action]
+        surface.blit(self.image, (self.rect.x, self.rect.y))
+        # health
+        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect((5), 5, 80, 64))
+        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect((105), 5, 80, 64))
+        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect((205), 5, 80, 64))
+        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect((305), 5, 80, 64))
+        pygame.draw.rect(surface, (0, 0, 0), pygame.Rect((405), 5, 80, 64))
+        for i in range(self.health):
+            surface.blit(self.images[6], (i * 100 - 50, -50))
