@@ -25,10 +25,12 @@ def get_font(size):
 
 
 def play(difficulty):
+    #one boss for now
+    yeti_sprite = pygame.image.load("assets/images/bosses/yeti/Yeti.png").convert_alpha()
     if difficulty == "hard":
         damage = 7
-        recoveryTime = 50
-        maxCounter = 10
+        recoveryTime = 60
+        maxCounter = 15
         miss_cooldown = 50
         defaultCharacter = Character(["wasafe", "raslacar", "augue inrcidant tibi", "etwad", "freeasr", "qazxcdews"])
 
@@ -38,7 +40,7 @@ def play(difficulty):
         recoveryTime = 100
         maxCounter = 40
         miss_cooldown = 200
-    tutorialBoss = Boss(1000, maxCounter,miss_cooldown)
+    tutorialBoss = Boss(1000, maxCounter,miss_cooldown,yeti_sprite)
     index = randrange(0, len(defaultCharacter.spellBook))
 
     # annoying text work
@@ -66,6 +68,7 @@ def play(difficulty):
         if tutorialBoss.recoveryTime == 0:
             if tutorialBoss.isBossAttacking:
                 if tutorialBoss.attackCounter == 0:
+                    tutorialBoss.action=0
                     if tutorialBoss.attackDirection == defaultCharacter.curBlock:
                         print("BLOCKED")
                     else:
@@ -94,12 +97,7 @@ def play(difficulty):
                 else:
                     tutorialBoss.attackCounter -= 1
                     if tutorialBoss.attackCounter == 20:
-                        if tutorialBoss.attackDirection == "left":
-                            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(700, 350, 60, 20))
-                        elif tutorialBoss.attackDirection == "right":
-                            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(900, 350, 60, 20))
-                        elif tutorialBoss.attackDirection == "up":
-                            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(800, 250, 60, 20))
+                       tutorialBoss.action=3
 
             else:
                 tutorialBoss.checkIfAttacking()
@@ -158,7 +156,7 @@ def play(difficulty):
             if idx == defaultCharacter.curLetter:
                 color = 'lightblue'
             elif idx < defaultCharacter.curLetter:
-                color = 'lightgrey'
+                color = 'yellow'
             else:
                 color = 'white'
             font.render_to(text_surf, (x, baseline), letter, color)
