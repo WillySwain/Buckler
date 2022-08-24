@@ -1,6 +1,7 @@
 import sys
 from random import randrange
-
+import sys
+import os
 import pygame.font
 import pygame.freetype
 import pygame
@@ -20,24 +21,36 @@ clock = pygame.time.Clock();
 FPS = 60
 
 
+def resource_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 def get_font(size):
     return pygame.font.SysFont("pristina", size)
 
 
 def play(difficulty):
     # one boss for now
-    yeti_sprite = pygame.image.load("assets/images/bosses/yeti/Yeti.png").convert_alpha()
-    wizard_sprite = pygame.image.load("assets/images/wizardspritesheet.png").convert_alpha()
+    yetiurl = resource_path("assets/images/bosses/yeti/Yeti.png")
+    wizardurl=resource_path("assets/images/wizardspritesheet.png")
+    yeti_sprite = pygame.image.load(yetiurl).convert_alpha()
+    wizard_sprite = pygame.image.load(wizardurl).convert_alpha()
     if difficulty == "easy":
         damage = 40
         recoveryTime = 250
         maxCounter = 120
         miss_cooldown = 300
-        defaultCharacter = Character(["wasafe", "raslacar", "augue inrcidant tibi", "etwad", "freeasr", "qazxcdews"],wizard_sprite)
+        defaultCharacter = Character(["wesa", "refca", "frazzer", "wewsa", "wasda", "weza", "qwexa"], wizard_sprite)
 
     else:
         damage = 15
-        defaultCharacter = Character(["wesa", "refca", "frazzer", "wewsa", "wasda", "weza", "qwexa"],wizard_sprite)
+        defaultCharacter = Character(["wesa", "refca", "frazzer", "wewsa", "wasda", "weza", "qwexa"], wizard_sprite)
         recoveryTime = 100
         maxCounter = 40
         miss_cooldown = 200
@@ -120,6 +133,12 @@ def play(difficulty):
                 if event.unicode == defaultCharacter.spellBook[index][defaultCharacter.curLetter].lower():
                     defaultCharacter.curLetter += 1
                     if defaultCharacter.curLetter >= len(text):
+                        tempaction = defaultCharacter.action
+                        defaultCharacter.action = 2
+                        defaultCharacter.draw(screen)
+                        pygame.display.update()
+                        pygame.time.delay(200)
+                        defaultCharacter.action = tempaction
                         tutorialBoss.health = tutorialBoss.health - len(text) * damage  # balancing needed
                         if tutorialBoss.health <= 0:
                             tutorialBoss.draw(screen, 150, 550)
@@ -185,6 +204,31 @@ def select_difficulty():
         pygame.display.update()
 
 
+def controls_page():
+    screen.fill((0, 0, 0))
+    contr_text = get_font(40).render("The boss will attack in three directions: left, up, and right", True, "#b68f40")
+    contr_rect = contr_text.get_rect(center=(500, 100))
+    screen.blit(contr_text, contr_rect)
+    contr_text = get_font(40).render("Block incoming attacks with the left, up, or right arrow keys", True, "#b68f40")
+    contr_rect = contr_text.get_rect(center=(500, 200))
+    screen.blit(contr_text, contr_rect)
+    contr_text = get_font(40).render("At the same time, type out spells to damage the boss", True, "#b68f40")
+    contr_rect = contr_text.get_rect(center=(500, 300))
+    screen.blit(contr_text, contr_rect)
+    while True:
+
+        mouse_pos = pygame.mouse.get_pos()
+        back_button = Button(image=None, pos=(500, 400), text_input="Back", font=get_font(75), color=(255, 0, 0),
+                             hover_color=(255, 255, 255))
+        back_button.hovering(mouse_pos)
+        back_button.update(screen)
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if back_button.check_input(mouse_pos):
+                    main_menu()
+        pygame.display.update()
+
+
 def main_menu():
     screen.fill((0, 0, 0))
     while True:
@@ -213,7 +257,7 @@ def main_menu():
                 if play_button.check_input(mouse_pos):
                     select_difficulty()
                 if tutorial_button.check_input(mouse_pos):
-                    print("Coming Soon")
+                    controls_page()
                 if quit_button.check_input(mouse_pos):
                     pygame.quit()
                     sys.exit()

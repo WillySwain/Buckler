@@ -24,7 +24,7 @@ class Boss:
             images.append(pygame.transform.scale(tempimage,(128*3,128*3)))
         return images
     def draw(self, surface,x ,y):
-        pygame.draw.rect(surface, (0,0,0), pygame.Rect(500, 0, 384, 384))
+        pygame.draw.rect(surface, (0,0,0), pygame.Rect(500, 0, 384, 300))
         self.image = self.images[self.action]
         surface.blit(self.image,(self.rect.x,self.rect.y))
         ratio = self.health / self.maxHealth
