@@ -1,6 +1,9 @@
 import pygame
 
 
+# William Swain
+# 08.10.2022
+# character class
 class Character:
     def __init__(self, spellBook, spritesheet):
         self.images = self.load_images(spritesheet)
@@ -12,6 +15,7 @@ class Character:
         self.spellBook = spellBook
         self.curLetter = 0
 
+    # parses sprite sheet and gets different frames to load
     def load_images(self, sprite_sheet):
         images = []
         for i in range(7):
@@ -19,6 +23,7 @@ class Character:
             images.append(pygame.transform.scale(tempimage, (128 * 1.5, 128 * 1.5)))
         return images
 
+    # draws the character and health on the screen
     def draw(self, surface):
         pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(450, 320, 192, 192))
         self.image = self.images[self.action]

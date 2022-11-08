@@ -1,14 +1,15 @@
 import sys
-from random import randrange
-import sys
 import os
 import pygame.font
 import pygame.freetype
 import pygame
-
+from random import randrange
 from Button import Button
 from character import Character
 from boss import Boss
+
+# William Swain
+# 08.10.2022
 
 pygame.init()
 
@@ -20,7 +21,7 @@ pygame.display.set_caption("Buckler")
 clock = pygame.time.Clock();
 FPS = 60
 
-
+# method for exporting pygame
 def resource_path(relative_path):
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
@@ -31,6 +32,7 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
+# for getting different size fonts
 def get_font(size):
     return pygame.font.SysFont("pristina", size)
 
@@ -38,7 +40,7 @@ def get_font(size):
 def play(difficulty):
     # one boss for now
     yetiurl = resource_path("assets/images/bosses/yeti/Yeti.png")
-    wizardurl=resource_path("assets/images/wizardspritesheet.png")
+    wizardurl = resource_path("assets/images/wizardspritesheet.png")
     yeti_sprite = pygame.image.load(yetiurl).convert_alpha()
     wizard_sprite = pygame.image.load(wizardurl).convert_alpha()
     if difficulty == "easy":
@@ -75,6 +77,7 @@ def play(difficulty):
     pygame.time.delay(1500)  # give the player a second
 
     running = True
+    # main runner loop: reads all events and reacts to them
     while running:
         clock.tick(FPS)
         tutorialBoss.draw(screen, 150, 550)
@@ -178,6 +181,7 @@ def play(difficulty):
     main_menu()
 
 
+# a page for selecting different parameters for the game
 def select_difficulty():
     screen.fill((0, 0, 0))
     while True:
@@ -204,6 +208,7 @@ def select_difficulty():
         pygame.display.update()
 
 
+# quick tutorial page on how to play the game
 def controls_page():
     screen.fill((0, 0, 0))
     contr_text = get_font(40).render("The boss will attack in three directions: left, up, and right", True, "#b68f40")
@@ -229,6 +234,7 @@ def controls_page():
         pygame.display.update()
 
 
+# main hub page
 def main_menu():
     screen.fill((0, 0, 0))
     while True:

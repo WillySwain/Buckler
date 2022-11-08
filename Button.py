@@ -1,3 +1,6 @@
+# William Swain
+# 08.10.2022
+# Button class to redirect user to different pages
 class Button:
     def __init__(self, image, pos, text_input, font, color, hover_color):
         self.image = image
@@ -13,16 +16,20 @@ class Button:
         self.rect = self.image.get_rect(center=(self.x, self.y))
         self.text_rect = self.text.get_rect(center=(self.x, self.y))
 
+    # draws button on screen
     def update(self, surface):
         if self.image is not None:
             surface.blit(self.image, self.rect)
         surface.blit(self.text, self.text_rect)
 
+    # if click is detected, checks if it was on this button
     def check_input(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top,self.rect.bottom):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top,
+                                                                                          self.rect.bottom):
             return True
         return False
 
+    # changes color if mouse is hovering over button
     def hovering(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top,
                                                                                           self.rect.bottom):
