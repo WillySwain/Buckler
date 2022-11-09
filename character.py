@@ -5,14 +5,14 @@ import pygame
 # 08.10.2022
 # character class
 class Character:
-    def __init__(self, spellBook, spritesheet):
-        self.images = self.load_images(spritesheet)
+    def __init__(self, spell_book, sprite_sheet):
+        self.images = self.load_images(sprite_sheet)
         self.action = 0  # 0 idle #1:rightblock #2:attack #3 oops frontblock #4 blockleft #5 block up
         self.image = self.images[self.action]
         self.curBlock = ""
         self.health = 5
         self.rect = pygame.Rect((450, 350, 80, 100))
-        self.spellBook = spellBook
+        self.spellBook = spell_book
         self.curLetter = 0
 
     # parses sprite sheet and gets different frames to load
